@@ -1,0 +1,70 @@
+import React from "react";
+import Button from "../button/Button";
+import { Link } from "react-router-dom";
+import Form from "../form/Form";
+
+export default function LoginForm() {
+  const [loginData, setLoginData] = React.useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData({ ...loginData, [name]: value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <div className="flex  grow w-full ">
+      <section className="flex-auto pr-3 pl-3">
+        <div className=" sm:p-4 bg-white rounded-lg shadow-4xl sm:max-w-175 mx-auto  ">
+          <div className="flex flex-col text-center justify-center mb-6 ">
+            <h1 className="text-xl">Login</h1>
+            <p className=" text-gray-500 ">Login to continue shopping</p>
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className="  flex flex-col w-full gap-3"
+          >
+            <Form
+              type="email"
+              name="email"
+              value={loginData.email}
+              onChange={handleChange}
+              placeholder="email"
+            >
+              Email
+            </Form>
+
+            <Form
+              type="password"
+              name="password"
+              value={loginData.password}
+              onChange={handleChange}
+              placeholder="password"
+            >
+              Password
+            </Form>
+
+            <div className="mt-4"></div>
+
+            <div className="flex gap-4">
+              <Button type="submit" onSubmit={handleSubmit}>
+                Login
+              </Button>
+
+              <Link
+                to="/signup"
+                className="w-fit text-[#004A57] underline p-2 text-md"
+              >
+                don't have an account
+              </Link>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  );
+}

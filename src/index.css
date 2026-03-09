@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@font-face {
+  font-family: "PingARLT";
+  src: url("../assets/font/PingARLT-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "PingARLT";
+  src: url("../assets/font/PingARLT-Medium.woff2") format("woff2");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "PingARLT";
+  src: url("../assets/font/PingARLT-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+body {
+  font-family:
+    PingARLT,
+    Jost,
+    IBM Plex Sans,
+    sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  background: #fafafa;
+}
+footer {
+  font-family:
+    IBM Plex Sans,
+    sans-serif;
+}
