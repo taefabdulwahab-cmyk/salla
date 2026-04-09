@@ -5,7 +5,7 @@ export default function Button({ children, type }) {
   return (
     <button
       type={type}
-      className=" flex flex-1 justify-center items-center  bg-[#004A57] text-white  rounded-md w-full cursor-pointer "
+      className=" flex flex-1 justify-center items-center  bg-[#004A57] text-white  rounded-md w-full cursor-pointer p-2"
     >
       {children}
     </button>

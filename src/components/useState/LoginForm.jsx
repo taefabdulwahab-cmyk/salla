@@ -17,9 +17,9 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="flex  grow w-full ">
+    <div className="flex grow w-full ">
       <section className="flex-auto pr-3 pl-3">
-        <div className=" sm:p-4 bg-white rounded-lg shadow-4xl sm:max-w-175 mx-auto  ">
+        <div className=" sm:p-4 bg-white rounded-lg  mx-auto sm:max-w-175 p-3">
           <div className="flex flex-col text-center justify-center mb-6 ">
             <h1 className="text-xl">Login</h1>
             <p className=" text-gray-500 ">Login to continue shopping</p>
