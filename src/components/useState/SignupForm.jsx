@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "../button/Button";
 import { Link } from "react-router-dom";
 import Form from "../form/Form";
-
+import { UserContext } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 export default function SignupForm() {
+  const { addUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [SignupData, setSignupData] = React.useState({
     username: "",
     email: "",
@@ -22,7 +25,11 @@ export default function SignupForm() {
       console.log("Rejected");
       return;
     }
-
+    addUser({
+      name: SignupData.username,
+      email: SignupData.email,
+    });
+    navigate("/Salla");
     console.log("accepted", SignupData);
   };
   // min-sm:scale-95  grow w-full
@@ -80,9 +87,7 @@ export default function SignupForm() {
             <div className="mt-4"></div>
 
             <div className="flex gap-4">
-              <Button type="submit" onSubmit={handleSubmit}>
-                Register
-              </Button>
+              <Button type="submit">Register</Button>
 
               <Link
                 to="/login"

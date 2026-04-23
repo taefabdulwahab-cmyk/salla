@@ -1,54 +1,31 @@
 import React from "react";
-import { useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { products } from "../../data/products";
+// import {products} from "../../data/products";
 import Button from "../button/Button";
 import CartItem from "../Cart/CartItem";
+import { CartContext } from "../../context/CartContext";
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState(
-    products.map((item) => ({ ...item, quantity: 1 })),
-  );
+  const {
+    cartItems,
+    handleAddQuantity,
+    handleRemoveQuantity,
+    handleDeleteProduct,
+  } = useContext(CartContext);
 
-  const handlAddQuantity = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity: item.quantity < 10 ? item.quantity + 1 : item.quantity,
-            }
-          : item,
-      ),
-    );
-  };
-  const handlRemoveQuantity = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity: item.quantity > 1 ? item.quantity - 1 : item.quantity,
-            }
-          : item,
-      ),
-    );
-  };
-  const handlDeleteProduct = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
   return (
     <div className=" max-w-300.5 mx-auto px-4 static  ">
       <div className="w-full bg-white rounded-md p-4 flex flex-col ">
         <h1 className="text-2xl text-right w-full mb-5">Cart</h1>
         <div>
-          {cartItems.map((data, i) => (
+          {cartItems.map((data, index) => (
             <CartItem
-              key={data.id}
+              key={data.id || index}
               product={data}
-              onAddQuantity={handlAddQuantity}
-              onRemoveQuantity={handlRemoveQuantity}
-              onDeleteProduct={handlDeleteProduct}
+              onAddQuantity={handleAddQuantity}
+              onRemoveQuantity={handleRemoveQuantity}
+              onDeleteProduct={handleDeleteProduct}
             />
           ))}
         </div>
@@ -71,3 +48,13 @@ export default function Cart() {
     </div>
   );
 }
+
+// const handleAddQuantity = (id) => {
+//   cartItems(id);
+// };
+// const handleRemoveQuantity = (id) => {
+//   cartItems(id);
+// };
+// const handleDeleteProduct = (id) => {
+//   cartItems(id);
+// };

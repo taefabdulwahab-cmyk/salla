@@ -15,7 +15,7 @@ export default function QuantityControl({ value, onIncrease, onDecrease }) {
       <input
         className="text-black w-12 text-center"
         readOnly={true}
-        value={value}
+        value={value || 1}
       ></input>
       <button
         className="px-2 text-md text-gray-500 cursor-pointer"

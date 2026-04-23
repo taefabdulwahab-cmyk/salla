@@ -18,7 +18,7 @@ const routers = [
     ],
   },
   {
-    // path: "/",
+    path: "/",
     element: <AuthLayout />,
     children: [
       { path: "login", element: <LoginPage /> },

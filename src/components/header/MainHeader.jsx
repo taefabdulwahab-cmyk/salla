@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import LanguageSelector from "./LanguageSelector";
@@ -6,7 +6,10 @@ import CartIcon from "./CartIcon";
 import UserIcon from "../header/UserIcon";
 import HeaderTitle from "./HeaderTitle";
 import SallaLogo from "./SallaLogo";
+import { UserContext } from "../../context/UserContext";
 export default function MainHeader() {
+  const { user, logout } = useContext(UserContext);
+
   return (
     <>
       <div className=" max-w-300   w-full mx-auto  px-4    ">

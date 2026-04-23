@@ -2,18 +2,28 @@ import React from "react";
 import Button from "../button/Button";
 import { Link } from "react-router-dom";
 import Form from "../form/Form";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
+  const { addUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [loginData, setLoginData] = React.useState({
-    email: "",
+    username: "",
     password: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData({ ...loginData, [name]: value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await addUser({
+      username: loginData.username,
+      password: loginData.password,
+    });
+    navigate("/Salla");
   };
 
   return (
@@ -29,13 +39,13 @@ export default function LoginForm() {
             className="  flex flex-col w-full gap-3"
           >
             <Form
-              type="email"
-              name="email"
-              value={loginData.email}
+              type="text"
+              name="username"
+              value={loginData.username}
               onChange={handleChange}
               placeholder="email"
             >
-              Email
+              User Name
             </Form>
 
             <Form

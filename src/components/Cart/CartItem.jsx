@@ -1,11 +1,10 @@
 import React from "react";
 import { useState } from "react";
-import { products } from "../../data/products";
+// import { products } from "../../data/products";
 import QuantityControl from "../button/QuantityControl";
 import { Link } from "react-router-dom";
 export default function CartItem({
   product,
-
   onAddQuantity,
   onRemoveQuantity,
   onDeleteProduct,
@@ -27,7 +26,7 @@ export default function CartItem({
             <div className="flex flex-row gap-2 items-center ">
               <p className="font-bold 1tr">X{product.quantity}</p>
               <span className=" font-medium text-xs text-gray-500 ">
-                SAR&nbsp;{product.price.toFixed(2)}
+                SAR&nbsp;{Number(product.price).toFixed(2)}{" "}
               </span>
             </div>
           </div>
@@ -39,7 +38,7 @@ export default function CartItem({
             onDecrease={() => onRemoveQuantity(product.id)}
           />
           <img
-            className="w-7 p-1 rounded-full border-2 border-red-600"
+            className="w-7 p-1 rounded-full border-2 border-red-600 cursor-pointer"
             src="https://www.svgrepo.com/show/494116/garbage-can.svg"
             alt="delete"
             onClick={(e) => {
