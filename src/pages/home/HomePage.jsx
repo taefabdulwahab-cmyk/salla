@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import HeroSection from "../../components/home/HeroSection";
 import ProductFilter from "../../components/home/ProductFilter";
 import ProductGrid from "../../components/home/ProductGrid";
@@ -6,14 +7,37 @@ import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import { API } from "../../api/API";
 import { useQuery } from "@tanstack/react-query";
-import { product } from "../../data/products";
-import { CartContext } from "../../context/CartContext";
 export default function HomePage() {
   const { token } = useContext(UserContext);
+  const [Filters, setFilters] = useState("");
+  const [search, setSearch] = useState("");
 
-  const { data: productData } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => await product.get("/products").then((res) => res.data),
+  const {
+    data: productData,
+    isLoading: productisLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ["products", Filters, search],
+    queryFn: async () =>
+      await API.get(
+        Filters
+          ? `/products/category/${Filters}`
+          : search
+            ? `/products/search?q=${search}`
+            : "/products",
+      ).then((res) => res.data),
+  });
+
+  const { data: category } = useQuery({
+    queryKey: ["category-list"],
+    queryFn: async () =>
+      await API.get("/products/category-list").then((res) => res.data),
+  });
+
+  const { data: searchData } = useQuery({
+    queryKey: ["Search-Items"],
+    queryFn: async () =>
+      await API.get(`/products/search?q=`).then((res) => res.data),
   });
 
   const {
@@ -35,9 +59,10 @@ export default function HomePage() {
     return (
       <div className="w-full h-125 flex items-center justify-center">
         <div className="flex flex-col items-center gap-2">
-          <img
-            src="https://icons8.com/preloaders/preloaders/813/preview.gif"
-            className="w-30 opacity-100 rounded-full mb-2"
+          <DotLottieReact
+            src="https://lottie.host/9748cf75-6053-4e72-9873-1cf25a9099c5/v1rS37WZ7X.lottie"
+            loop
+            autoplay
           />
           <span>is Loading...</span>
         </div>
@@ -59,16 +84,47 @@ export default function HomePage() {
       </div>
     );
   }
-
   return (
     <>
       <div className="max-w-300 mx-auto px-4">
         <div className="bg-white rounded-md p-4 flex gap-5 flex-col">
           <HeroSection />
-          <ProductFilter />
-          <ProductGrid products={productData?.products} />
+          <ProductFilter
+            Filters={Filters}
+            setFilters={setFilters}
+            search={search}
+            setSearch={setSearch}
+            searchData={searchData}
+            category={category}
+          />
+          <p className="text-sm text-gray-500">
+            Products : {productData?.products?.length || 0}
+          </p>
+          <ProductGrid
+            products={productData?.products}
+            productisLoading={productisLoading}
+            isFetching={isFetching}
+          />
         </div>
       </div>
     </>
   );
 }
+// productData?.products
+
+// const filteredProducts1 =
+//   Filters === "all"
+//     ? productData?.products
+//     : productData?.products?.filter((p) => p.category === Filters);
+
+// const SearchProducts1 =
+//   search === ""
+//     ? productData?.products
+//     : productData?.products?.filter((p) => {
+//         const text = search.toLowerCase();
+
+//         return (
+//           p.title.toLowerCase().includes(text) ||
+//           p.category.toLowerCase().includes(text)
+//         );
+//       });

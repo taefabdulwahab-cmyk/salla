@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../button/Button";
 import { Link } from "react-router-dom";
-import Form from "../form/Form";
+import Form from "./Form";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
