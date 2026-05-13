@@ -132,8 +132,8 @@ export default function AdminUsersPage() {
 
       {statusMessage && (
         <StatusMessage
-          message={successPopup.message}
-          type={successPopup.type}
+          message={statusMessage.message}
+          type={statusMessage.type}
         />
       )}
 
