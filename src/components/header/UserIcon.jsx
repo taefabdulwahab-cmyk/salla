@@ -8,7 +8,7 @@ export default function UserIcon() {
   return (
     <div className="relative group flex gap-2 justify-center items-center">
       <Link
-        to={user ? "/Salla" : "/login"}
+        to={user ? "/dashboard" : "/login"}
         className="flex items-center justify-center relative  w-10 h-10  rounded-full bg-[#bcf0e4] "
       >
         {user && user.image ? (
@@ -38,6 +38,7 @@ export default function UserIcon() {
                         opacity-0 invisible group-hover:opacity-100 group-hover:visible
                         transition duration-200 z-50"
         >
+          <p className="font-bold  text-gray-500">Enter to admin panel</p>
           <p className="font-bold">
             {user.firstName} {user.lastName}
           </p>

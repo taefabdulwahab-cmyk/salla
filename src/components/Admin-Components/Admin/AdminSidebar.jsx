@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SallaLogo from "../header/SallaLogo";
+import SallaLogo from "../../header/SallaLogo";
 export default function AdminSidebar() {
   return (
     <div>
@@ -11,7 +11,7 @@ export default function AdminSidebar() {
 
       <ul className="flex flex-col text-center justify-center  gap-4 text-white pt-5 ">
         <Link to="/dashboard/users">
-          <li className="p-3   items-center flex  trainsition-colors duration-300 hover:bg-[#A7F2E0] hover:text-black  gap-10">
+          <li className="p-3 items-center flex  trainsition-colors duration-300 hover:bg-[#A7F2E0] hover:text-black  gap-10">
             <img
               src="https://images.icon-icons.com/1993/PNG/512/avatar_male_man_people_person_profile_user_icon_123199.png"
               className="w-7"

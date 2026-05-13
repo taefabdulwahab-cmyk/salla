@@ -7,9 +7,9 @@ import ProductGrid from "../components/home/ProductGrid";
 import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
 import AdminLayout from "../layouts/AdminLayout";
-import AdminDisplayArea from "../components/Admin/AdminDisplayArea";
-import AllUsers from "../components/Users/AllUsers";
-import AdminProduct from "../components/Admin/AdminProduct";
+import AdminDisplayArea from "../pages/dashboard/DashboardHome/AdminDashboardPage";
+import AdminUsersPage from "../pages/dashboard/Users/AdminUsersPage";
+import AdminProductPage from "../pages/dashboard/Product/AdminProductPage";
 const routers = [
   {
     path: "/",
@@ -34,8 +34,8 @@ const routers = [
     element: <AdminLayout />,
     children: [
       { path: "", exact: true, element: <AdminDisplayArea /> },
-      { path: "products", exact: true, element: <AdminProduct /> },
-      { path: "users", exact: true, element: <AllUsers /> },
+      { path: "products", exact: true, element: <AdminProductPage /> },
+      { path: "users", exact: true, element: <AdminUsersPage /> },
     ],
   },
 ];
