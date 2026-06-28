@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
-import { API } from "../../../../api/API";
+import { API } from "../../../../../api/API";
 import { Loader2 } from "lucide-react";
 
 export default function AddProductForm({

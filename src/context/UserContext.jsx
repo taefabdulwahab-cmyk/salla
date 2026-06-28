@@ -21,7 +21,18 @@ export const UserProvider = ({ children }) => {
   const addUser = async (newUser) => {
     try {
       const res = await API.post("auth/login", newUser);
-      setUser(res.data);
+
+      const userRes = await API.get(`/users/${res.data.id}`);
+      // console.log("res.data: ", res.data);
+      // console.log("LOGIN RESPONSE", res.data);
+      // console.log("USER RESPONSE", userRes.data);
+      // console.log("ROLE", userRes.data.role);
+      setUser({
+        ...res.data,
+        // role: userRes.data.role,
+        role: "user",
+      });
+      // setUser(res.data);
       setToken(res.data.accessToken);
     } catch (err) {
       console.log(err);

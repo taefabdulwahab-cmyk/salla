@@ -6,10 +6,12 @@ import CartPage from "../pages/cart/CartPage";
 import ProductGrid from "../components/home/ProductGrid";
 import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
-import AdminLayout from "../layouts/AdminLayout";
-import AdminDisplayArea from "../pages/dashboard/DashboardHome/AdminDashboardPage";
+import DashboardLayout from "../layouts/DashboardLayout";
+import ProfileDashboardPage from "../pages/dashboard/Profile/ProfileDashboardPage";
 import AdminUsersPage from "../pages/dashboard/Users/AdminUsersPage";
 import AdminProductPage from "../pages/dashboard/Product/AdminProductPage";
+import WishlistPage from "../pages/dashboard/Wishlist/WishlistPage";
+import ProtectedRoute from "./ProtectedRoute";
 const routers = [
   {
     path: "/",
@@ -31,11 +33,23 @@ const routers = [
 
   {
     path: "/dashboard",
-    element: <AdminLayout />,
+    element: <DashboardLayout />,
     children: [
-      { path: "", exact: true, element: <AdminDisplayArea /> },
-      { path: "products", exact: true, element: <AdminProductPage /> },
-      { path: "users", exact: true, element: <AdminUsersPage /> },
+      { path: "Profile", index: true, element: <ProfileDashboardPage /> },
+
+      {
+        element: <ProtectedRoute allowedRoles={["admin"]} />,
+        children: [
+          { path: "users", element: <AdminUsersPage /> },
+          { path: "products", element: <AdminProductPage /> },
+        ],
+      },
+      // , "admin"
+
+      {
+        element: <ProtectedRoute allowedRoles={["user"]} />,
+        children: [{ path: "wishlist", element: <WishlistPage /> }],
+      },
     ],
   },
 ];

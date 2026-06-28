@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-
+import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 // import { product } from "../../data/products";
 import SingleCard from "../product/SingleCard";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "../../api/API";
 
+import { useEffect } from "react";
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
 export default function SingleProduct() {
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const { user } = useContext(UserContext);
+  const [isAddingComment, setIsAddingComment] = useState(false);
   const { id } = useParams();
   const {
     data: productData,
@@ -18,6 +25,38 @@ export default function SingleProduct() {
     queryFn: async () =>
       await API.get(`products/${id}`).then((res) => res.data),
   });
+  useEffect(() => {
+    const savedComments = localStorage.getItem(`comments-${id}`);
+
+    if (savedComments) {
+      setComments(JSON.parse(savedComments));
+    }
+  }, [id]);
+
+  const handleAddComment = () => {
+    if (!newComment.trim()) return;
+
+    setIsAddingComment(true);
+
+    setTimeout(() => {
+      const comment = {
+        id: Date.now(),
+        body: newComment,
+        user: {
+          username: user?.username || "Guest",
+        },
+      };
+
+      const updatedComments = [comment, ...comments];
+
+      setComments(updatedComments);
+
+      localStorage.setItem(`comments-${id}`, JSON.stringify(updatedComments));
+
+      setNewComment("");
+      setIsAddingComment(false);
+    }, 1000);
+  };
 
   const [quantity, setQuantity] = useState(1);
 
@@ -64,6 +103,11 @@ export default function SingleProduct() {
           quantity={quantity}
           onAddQuantity={handleAddQuantity}
           onRemoveQuantity={handleRemoveQuantity}
+          comments={comments}
+          newComment={newComment}
+          setNewComment={setNewComment}
+          handleAddComment={handleAddComment}
+          isAddingComment={isAddingComment}
         />
       )}
     </div>

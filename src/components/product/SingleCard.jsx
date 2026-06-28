@@ -8,6 +8,11 @@ export default function SingleCard({
   quantity,
   onAddQuantity,
   onRemoveQuantity,
+  comments,
+  newComment,
+  setNewComment,
+  handleAddComment,
+  isAddingComment,
 }) {
   const { addToCart } = useContext(CartContext);
   const [toast, setToast] = useState({ message: "", image: "" });
@@ -75,6 +80,39 @@ export default function SingleCard({
                 {loading ? "loding..." : "Add to cart"}
               </Button>
             </div>
+          </div>
+        </div>
+        <div className="mt-10 bg-white p-5 rounded-lg shadow-sm">
+          <h2 className="text-2xl font-semibold mb-4">Comments</h2>
+
+          <div className="flex gap-2 mb-5">
+            <input
+              type="text"
+              placeholder="write comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              className="border w-full px-4 py-2 rounded-md outline-none"
+            />
+
+            <button
+              onClick={handleAddComment}
+              disabled={isAddingComment}
+              className="bg-black text-white px-5 rounded-md"
+            >
+              {isAddingComment ? "Adding..." : "Add"}
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            {comments.map((comment) => (
+              <div key={comment.id} className="border p-4 rounded-md">
+                <h3 className="font-semibold text-sm">
+                  {comment.user?.username || "Anonymous"}
+                </h3>
+
+                <p className="mt-2 text-gray-600">{comment.body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

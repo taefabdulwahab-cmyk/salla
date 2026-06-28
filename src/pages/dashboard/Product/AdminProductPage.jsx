@@ -1,12 +1,12 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { API } from "../../../api/API";
-import ProductsTable from "../../../components/Admin-Components/Table/ProductsTable/ProductsTable";
-import TableHeader from "../../../components/Admin-Components/Table/TableHeader";
+import ProductsTable from "../../../components/Dashboard-Components/Admin - Components/Table/ProductsTable/ProductsTable";
+import TableHeader from "../../../components/Dashboard-Components/Admin - Components/Table/TableHeader";
 import { useState } from "react";
-import Dialog from "../../../components/Admin-Components/Dialogs/Dialog";
-import AddProductForm from "../../../components/Admin-Components/Admin-Form/products/AddProductForm";
-import StatusMessage from "../../../components/Admin-Components/Messages/StatusMessage";
-import ViewProductDialog from "../../../components/Admin-Components/Dialogs/ViewProductDialog";
+import Dialog from "../../../components/Dashboard-Components/Admin - Components/Dialogs/Dialog";
+import AddProductForm from "../../../components/Dashboard-Components/Admin - Components/Admin-Form/products/AddProductForm";
+import StatusMessage from "../../../components/Dashboard-Components/Admin - Components/Messages/StatusMessage";
+import ViewProductDialog from "../../../components/Dashboard-Components/Admin - Components/Dialogs/ViewProductDialog";
 
 export default function AdminProductPage() {
   const [openDialog, setOpenDialog] = useState(false);

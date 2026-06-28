@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { API } from "../../../api/API";
-import UsersTable from "../../../components/Admin-Components/Table/UsersTable/UsersTable";
-import TableHeader from "../../../components/Admin-Components/Table/TableHeader";
-import Dialog from "../../../components/Admin-Components/Dialogs/Dialog";
-import AddUserForm from "../../../components/Admin-Components/Admin-Form/users/AddUserForm";
-import StatusMessage from "../../../components/Admin-Components/Messages/StatusMessage";
-import ViewUserDialog from "../../../components/Admin-Components/Dialogs/ViewUserDialog";
-
+import UsersTable from "../../../components/Dashboard-Components/Admin - Components/Table/UsersTable/UsersTable";
+import TableHeader from "../../../components/Dashboard-Components/Admin - Components/Table/TableHeader";
+import Dialog from "../../../components/Dashboard-Components/Admin - Components/Dialogs/Dialog";
+import AddUserForm from "../../../components/Dashboard-Components/Admin - Components/Admin-Form/users/AddUserForm";
+import StatusMessage from "../../../components/Dashboard-Components/Admin - Components/Messages/StatusMessage";
+import ViewUserDialog from "../../../components/Dashboard-Components/Admin - Components/Dialogs/ViewUserDialog";
 export default function AdminUsersPage() {
   const [openDialog, setOpenDialog] = useState(false);
 

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { UserContext } from "../../../context/UserContext.jsx";
 import { Mail, ShieldCheck, User2 } from "lucide-react";
 
-export default function AdminDashboardPage() {
+export default function ProfileDashboardPage() {
   const { user } = useContext(UserContext);
   console.log(user);
   return (

@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import React, { useContext, useState, useEffect } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { CartContext } from "../../context/CartContext";
-
+import { Heart } from "lucide-react";
+import { WishlistContext } from "../../context/WishlistContext";
 export default function ProductCard({ product }) {
   const { addToCart } = useContext(CartContext);
+  const { toggleWishlist, wishlist } = useContext(WishlistContext);
   const [toast, setToast] = useState({ message: "", image: "" });
   const [loading, setLoading] = useState(false);
 
@@ -30,11 +32,17 @@ export default function ProductCard({ product }) {
       setLoading(false);
     }, 3000);
   };
-
+  const isWishlisted = wishlist.some((item) => item.id === product.id);
   return (
     <div className=" flex flex-col bg-white rounded-lg  items-center md:p-3 p-2   shadow-md  h-fit ">
       <div className=" flex  justify-center rounded-lg mb-2  ">
         <div className="w-full h-50 relative">
+          <Heart
+            onClick={() => toggleWishlist(product)}
+            fill={isWishlisted ? "currentColor" : "none"}
+            className="absolute top-2 right-2 cursor-pointer"
+          />
+
           <Link to={`/product/${product.id}`}>
             <img
               src={product.images?.[0]}

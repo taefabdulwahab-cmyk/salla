@@ -6,15 +6,18 @@ import { BrowserRouter } from "react-router-dom";
 import { CartProvider } from "./context/CartContext.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
 import ReactQuery from "./provider/ReactQuery.jsx";
+import { WishlistProvider } from "./context/WishlistContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ReactQuery>
       <UserProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </CartProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </CartProvider>
+        </WishlistProvider>
       </UserProvider>
     </ReactQuery>
   </StrictMode>,

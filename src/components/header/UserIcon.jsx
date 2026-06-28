@@ -8,7 +8,7 @@ export default function UserIcon() {
   return (
     <div className="relative group flex gap-2 justify-center items-center">
       <Link
-        to={user ? "/dashboard" : "/login"}
+        to={user ? "/dashboard/profile" : "/login"}
         className="flex items-center justify-center relative  w-10 h-10  rounded-full bg-[#bcf0e4] "
       >
         {user && user.image ? (
@@ -42,8 +42,9 @@ export default function UserIcon() {
           <p className="font-bold">
             {user.firstName} {user.lastName}
           </p>
-          <p className="text-sm text-gray-500">{user.gender}</p>
+          <p className="text-sm text-gray-500">{user.role}</p>
 
+          <p className="text-sm text-gray-500">{user.gender}</p>
           <p className="text-sm text-gray-500">{user.email}</p>
         </div>
       )}
