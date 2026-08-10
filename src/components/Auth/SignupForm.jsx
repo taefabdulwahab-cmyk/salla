@@ -29,7 +29,7 @@ export default function SignupForm() {
       name: SignupData.username,
       email: SignupData.email,
     });
-    navigate("/Salla");
+    navigate("/");
     console.log("accepted", SignupData);
   };
   // min-sm:scale-95  grow w-full

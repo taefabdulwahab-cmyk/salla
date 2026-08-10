@@ -23,7 +23,7 @@ export default function LoginForm() {
       username: loginData.username,
       password: loginData.password,
     });
-    navigate("/Salla");
+    navigate("/");
   };
 
   return (

@@ -17,7 +17,7 @@ const routers = [
     path: "/",
     element: <MainLayout />,
     children: [
-      { path: "Salla", index: true, element: <HomePage /> },
+      { path: "/", index: true, element: <HomePage /> },
       { path: "product/:id", element: <ProductPage /> },
       { path: "cart", index: true, element: <CartPage /> },
     ],
