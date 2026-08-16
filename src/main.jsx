@@ -7,18 +7,22 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
 import ReactQuery from "./provider/ReactQuery.jsx";
 import { WishlistProvider } from "./context/WishlistContext.jsx";
+import { LanguageProvider } from "./context/LanguageContext.jsx";
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ReactQuery>
-      <UserProvider>
-        <WishlistProvider>
-          <CartProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </CartProvider>
-        </WishlistProvider>
-      </UserProvider>
+      <LanguageProvider>
+        <UserProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </CartProvider>
+          </WishlistProvider>
+        </UserProvider>
+      </LanguageProvider>
     </ReactQuery>
   </StrictMode>,
 );

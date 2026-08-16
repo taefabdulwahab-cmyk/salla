@@ -1,29 +1,31 @@
-import React, { useContext } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
 import DashboardHeader from "../components/Dashboard-Components/Dashboard/DashboardHeader";
 import Footer from "../components/footer/Footer";
 import DashboardSidebar from "../components/Dashboard-Components/Dashboard/DashboardSidebar";
-import { UserContext } from "../context/UserContext";
+
 export default function DashboardLayout() {
-  // const { user } = useContext(UserContext);
-  // if (!user) {
-  //   return <Navigate to="/login" replace />;
-  // }
-  // if (user.role !== "admin") {
-  //   return <Navigate to="/Salla" replace />;
-  // }
-  // console.log(user.role);
+  const [search, setSearch] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <div>
       <div className="min-h-screen flex flex-row w-full ">
-        <div className="w-87.5 bg-[#004A57]/80  ">
-          <DashboardSidebar />
+        <div className=" flex flex-1">
+          <DashboardSidebar
+            isOpen={isSidebarOpen}
+            setIsOpen={setIsSidebarOpen}
+          />
         </div>
         <div className="flex-auto grow w-full overflow-hidden">
-          <DashboardHeader />
+          <DashboardHeader
+            search={search}
+            setSearch={setSearch}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
 
           <main className="flex-auto grow w-full bg-white  ">
-            <Outlet />
+            <Outlet context={{ search, setSearch }} />
           </main>
         </div>
       </div>

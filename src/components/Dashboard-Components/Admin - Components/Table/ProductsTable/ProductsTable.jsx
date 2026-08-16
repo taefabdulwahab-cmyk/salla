@@ -1,4 +1,5 @@
 import Table from "../Table";
+import { useLanguage } from "../../../../../context/LanguageContext.jsx";
 
 export default function ProductsTable({
   products,
@@ -8,10 +9,11 @@ export default function ProductsTable({
   onDelete,
   onView,
 }) {
+  const { t } = useLanguage();
   const columns = [
     {
       key: "product",
-      label: "Product",
+      label: t("product"),
       render: (_value, p) => (
         <div className="flex items-center gap-3">
           <img src={p.thumbnail} className="w-10 h-10 rounded object-cover" />
@@ -27,22 +29,22 @@ export default function ProductsTable({
 
     {
       key: "category",
-      label: "Category",
+      label: t("category"),
     },
 
     {
       key: "price",
-      label: "Price",
+      label: t("price"),
       render: (value) => `$${value}`,
     },
 
     {
       key: "stock",
-      label: "Stock",
+      label: t("stock"),
     },
     {
       key: "actions",
-      label: "Actions",
+      label: t("actions"),
       render: (_value, p) => (
         <div className="flex gap-2">
           <button

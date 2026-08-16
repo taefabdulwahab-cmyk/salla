@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-
+import { useLanguage } from "../../../../context/LanguageContext.jsx";
 export default function Dialog({
   open,
   onClose,
@@ -7,11 +7,15 @@ export default function Dialog({
   title,
   description,
   onConfirm,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText,
+  cancelText,
   loading = false,
   variant = "primary",
 }) {
+  const { t } = useLanguage();
+
+  const finalConfirmText = confirmText || t("confirm");
+  const finalCancelText = cancelText || t("cancel");
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") onClose?.();
@@ -29,13 +33,13 @@ export default function Dialog({
     danger: "bg-red-600 hover:bg-red-700 text-white",
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2">
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full max-w-lg rounded-2xl bg-white shadow-xl p-6 animate-in fade-in zoom-in-95">
+      <div className="relative z-10 w-full max-w-lg rounded-2xl bg-white shadow-xl p-3 md:p-6 animate-in fade-in zoom-in-95">
         <div className="flex flex-col gap-2 mb-10 bg-[#004A57] text-white p-4 rounded-lg">
           {title && <h2 className="text-lg font-semibold">{title}</h2>}
 
@@ -49,7 +53,7 @@ export default function Dialog({
             onClick={onClose}
             className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
           >
-            {cancelText}
+            {finalCancelText}
           </button>
 
           {onConfirm && (
@@ -60,7 +64,7 @@ export default function Dialog({
                 variantStyles[variant]
               } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
-              {loading ? "Processing..." : confirmText}
+              {loading ? t("processing") : finalConfirmText}
             </button>
           )}
         </div>

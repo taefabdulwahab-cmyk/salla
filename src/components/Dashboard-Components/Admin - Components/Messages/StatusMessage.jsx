@@ -1,10 +1,10 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-
+import { useLanguage } from "../../../../context/LanguageContext";
 export default function StatusMessage({ message, type }) {
   const isSuccess = type === "success";
-
+  const { t } = useLanguage();
   return (
-    <div className="fixed inset-0 z-999 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div className="fixed inset-0 z-999 flex items-center justify-center bg-black/40 backdrop-blur-sm p-2">
       <div className="bg-white rounded-3xl shadow-2xl p-8 w-87.5 text-center animate-in zoom-in-95">
         <div className="w-40 h-40 mx-auto">
           <DotLottieReact
@@ -23,7 +23,7 @@ export default function StatusMessage({ message, type }) {
             isSuccess ? "text-green-600" : "text-red-600"
           }`}
         >
-          {isSuccess ? "Success" : "Error"}
+          {isSuccess ? t("success") : t("error")}
         </h2>
 
         <p className="text-gray-500 mt-2">{message}</p>

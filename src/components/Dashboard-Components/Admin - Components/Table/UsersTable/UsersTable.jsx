@@ -1,5 +1,5 @@
 import Table from "../Table";
-
+import { useLanguage } from "../../../../../context/LanguageContext.jsx";
 export default function UsersTable({
   users,
   loading,
@@ -8,10 +8,11 @@ export default function UsersTable({
   onDelete,
   onView,
 }) {
+  const { t } = useLanguage();
   const columns = [
     {
       key: "user",
-      label: "User",
+      label: t("user"),
       render: (_value, u) => (
         <div>
           <p className="font-medium">
@@ -24,22 +25,22 @@ export default function UsersTable({
 
     {
       key: "username",
-      label: "Username",
+      label: t("username"),
       render: (value) => `@${value}`,
     },
 
     {
       key: "email",
-      label: "Email",
+      label: t("email"),
     },
 
     {
       key: "role",
-      label: "Role",
+      label: t("role"),
     },
     {
       key: "actions",
-      label: "Actions",
+      label: t("actions"),
       render: (_value, u) => (
         <div className="flex items-center gap-3">
           <button

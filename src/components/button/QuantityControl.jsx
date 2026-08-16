@@ -13,7 +13,7 @@ export default function QuantityControl({ value, onIncrease, onDecrease }) {
         +
       </button>
       <input
-        className="text-black w-12 text-center"
+        className="text-black w-6 md:w-12 text-center"
         readOnly={true}
         value={value || 1}
       ></input>

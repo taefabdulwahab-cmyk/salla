@@ -1,9 +1,10 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { useContext } from "react";
+import React, { useContext } from "react";
+import { Navigate, Outlet, useOutletContext } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+
 export default function ProtectedRoute({ allowedRoles }) {
   const { user } = useContext(UserContext);
+  const outletContext = useOutletContext();
   if (!user) {
     return <Navigate to="/login" replace />;
   }
@@ -11,5 +12,5 @@ export default function ProtectedRoute({ allowedRoles }) {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  return <Outlet context={outletContext} />;
 }

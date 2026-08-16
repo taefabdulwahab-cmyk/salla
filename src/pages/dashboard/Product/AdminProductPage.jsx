@@ -7,8 +7,13 @@ import Dialog from "../../../components/Dashboard-Components/Admin - Components/
 import AddProductForm from "../../../components/Dashboard-Components/Admin - Components/Admin-Form/products/AddProductForm";
 import StatusMessage from "../../../components/Dashboard-Components/Admin - Components/Messages/StatusMessage";
 import ViewProductDialog from "../../../components/Dashboard-Components/Admin - Components/Dialogs/ViewProductDialog";
+import { useLanguage } from "../../../context/LanguageContext.jsx";
+import { useOutletContext } from "react-router-dom";
 
 export default function AdminProductPage() {
+  const { t } = useLanguage();
+  const { search } = useOutletContext();
+
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -25,6 +30,14 @@ export default function AdminProductPage() {
     },
     staleTime: SIX_HOURS,
     cacheTime: SIX_HOURS,
+  });
+  const filteredProducts = data?.products?.filter((product) => {
+    const searchValue = search.toLowerCase();
+    return (
+      String(product.id).toLowerCase().includes(searchValue) ||
+      product.name?.toLowerCase().includes(searchValue) ||
+      product.description?.toLowerCase().includes(searchValue)
+    );
   });
 
   const handleView = (product) => {
@@ -51,7 +64,7 @@ export default function AdminProductPage() {
 
       setStatusMessage({
         type: "success",
-        message: "Product deleted successfully",
+        message: t("productDeletedSuccessfully"),
       });
 
       await queryClient.invalidateQueries({
@@ -67,7 +80,7 @@ export default function AdminProductPage() {
 
       setStatusMessage({
         type: "error",
-        message: "Delete failed",
+        message: t("deleteFailed"),
       });
 
       setTimeout(() => {
@@ -80,15 +93,15 @@ export default function AdminProductPage() {
   return (
     <div className="p-5">
       <TableHeader
-        title="Products"
-        count={data?.products?.length}
-        description="manage your products"
-        buttonText="+ Add Product"
+        title={t("products")}
+        count={filteredProducts?.length}
+        description={t("manageYourProducts")}
+        buttonText={t("addProduct")}
         onClick={() => setOpenDialog(true)}
       />
 
       <ProductsTable
-        products={data?.products}
+        products={filteredProducts}
         loading={isLoading}
         error={error?.message}
         onEdit={handleEdit}
@@ -99,8 +112,8 @@ export default function AdminProductPage() {
       <Dialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}
-        title="Add Product"
-        description="Add a new Product"
+        title={t("addProduct")}
+        description={t("addProductDescription")}
         loading={false}
         children={
           <AddProductForm
@@ -113,8 +126,8 @@ export default function AdminProductPage() {
       <Dialog
         open={openEditDialog}
         onClose={() => setOpenEditDialog(false)}
-        title="Edit Product"
-        description="Update product information"
+        title={t("editProduct")}
+        description={t("updateProductInformation")}
       >
         <AddProductForm
           setOpenDialog={setOpenEditDialog}
@@ -126,9 +139,9 @@ export default function AdminProductPage() {
       <Dialog
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}
-        title="Delete Product"
-        description={`Are you sure you want to delete ${selectedProduct?.title}?`}
-        confirmText="Delete"
+        title={t("deleteProduct")}
+        description={`"${t("areYouSureYouWantToDelete")}" ${selectedProduct?.title}?`}
+        confirmText={t("delete")}
         variant="danger"
         onConfirm={handleConfirmDelete}
       />
@@ -144,7 +157,7 @@ export default function AdminProductPage() {
         open={openViewDialog}
         onClose={() => setOpenViewDialog(false)}
         selectedProduct={selectedProduct}
-        title="Product Details"
+        title={t("productDetails")}
       />
     </div>
   );

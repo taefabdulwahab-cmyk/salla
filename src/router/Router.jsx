@@ -6,6 +6,8 @@ import CartPage from "../pages/cart/CartPage";
 import ProductGrid from "../components/home/ProductGrid";
 import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
+import ProductLayout from "../layouts/ProductLayout";
+
 import DashboardLayout from "../layouts/DashboardLayout";
 import ProfileDashboardPage from "../pages/dashboard/Profile/ProfileDashboardPage";
 import AdminUsersPage from "../pages/dashboard/Users/AdminUsersPage";
@@ -18,9 +20,14 @@ const routers = [
     element: <MainLayout />,
     children: [
       { path: "/", index: true, element: <HomePage /> },
-      { path: "product/:id", element: <ProductPage /> },
+      // { path: "product/:id", element: <ProductPage /> },
       { path: "cart", index: true, element: <CartPage /> },
     ],
+  },
+  {
+    path: "/",
+    element: <ProductLayout />,
+    children: [{ path: "product/:id", element: <ProductPage /> }],
   },
   {
     path: "/",

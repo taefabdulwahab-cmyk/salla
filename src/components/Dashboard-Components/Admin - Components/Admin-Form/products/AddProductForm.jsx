@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { API } from "../../../../../api/API";
 import { Loader2 } from "lucide-react";
-
+import { useLanguage } from "../../../../../context/LanguageContext.jsx";
 export default function AddProductForm({
   setOpenDialog,
   setStatusMessage,
   editData,
 }) {
+  const { t } = useLanguage();
   const [ProductForm, setProductForm] = useState({
     title: "",
     description: "",
@@ -35,12 +36,12 @@ export default function AddProductForm({
 
   const validate = () => {
     const newError = {};
-    if (!ProductForm.title) newError.title = "title is required";
+    if (!ProductForm.title) newError.title = t("title_required");
     if (!ProductForm.description)
-      newError.description = "description is required";
-    if (!ProductForm.stock) newError.stock = "stock is required";
-    if (!ProductForm.price) newError.price = "price is required";
-    if (!ProductForm.category) newError.category = "category is required";
+      newError.description = t("description_required");
+    if (!ProductForm.stock) newError.stock = t("stock_required");
+    if (!ProductForm.price) newError.price = t("price_required");
+    if (!ProductForm.category) newError.category = t("category_required");
     setError(newError);
     return Object.keys(newError).length === 0;
   };
@@ -66,8 +67,8 @@ export default function AddProductForm({
       setStatusMessage({
         type: "success",
         message: editData
-          ? "Product updated successfully"
-          : "Product added successfully",
+          ? t("productUpdatedSuccessfully")
+          : t("productAddedSuccessfully"),
       });
 
       await queryClient.invalidateQueries({
@@ -81,15 +82,15 @@ export default function AddProductForm({
     },
 
     onError: (err) => {
-      console.error("Error adding products:", err);
+      console.error(t("errorAddingProducts"), err);
 
       setError({
-        submit: "Failed to save product. Please try again.",
+        submit: t("failedToSaveProduct"),
       });
 
       setStatusMessage({
         type: "error",
-        message: "Something went wrong",
+        message: t("somethingWentWrong"),
       });
 
       setTimeout(() => {
@@ -121,7 +122,7 @@ export default function AddProductForm({
     try {
       productMutation.mutate(ProductForm);
     } catch (err) {
-      console.error("Error adding user:", err);
+      console.error(t("errorAddingProducts"), err);
     }
   };
 
@@ -129,7 +130,7 @@ export default function AddProductForm({
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Title
+          {t("title")}
         </label>
 
         <input
@@ -137,7 +138,7 @@ export default function AddProductForm({
           name="title"
           value={ProductForm.title}
           onChange={handleChange}
-          placeholder="Enter Title"
+          placeholder={t("enterTitle")}
           className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
         />
 
@@ -148,7 +149,7 @@ export default function AddProductForm({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Description
+          {t("description")}
         </label>
 
         <input
@@ -156,7 +157,7 @@ export default function AddProductForm({
           name="description"
           value={ProductForm.description}
           onChange={handleChange}
-          placeholder="Enter description"
+          placeholder={t("enterDescription")}
           className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
         />
 
@@ -167,7 +168,7 @@ export default function AddProductForm({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Price
+          {t("price")}
         </label>
 
         <input
@@ -176,7 +177,7 @@ export default function AddProductForm({
           min="1"
           value={ProductForm.price}
           onChange={handleChange}
-          placeholder="Enter price"
+          placeholder={t("enterPrice")}
           className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
         />
 
@@ -188,7 +189,7 @@ export default function AddProductForm({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Stock
+            {t("stock")}
           </label>
 
           <input
@@ -197,7 +198,7 @@ export default function AddProductForm({
             min="1"
             value={ProductForm.stock}
             onChange={handleChange}
-            placeholder="stock"
+            placeholder={t("enterStock")}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
           />
 
@@ -208,7 +209,7 @@ export default function AddProductForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Category
+            {t("category")}
           </label>
 
           <select
@@ -217,7 +218,7 @@ export default function AddProductForm({
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
           >
-            <option value="">Select category</option>
+            <option value="">{t("selectCategory")}</option>
 
             {categories?.map((cat, i) => (
               <option key={i} value={cat.slug}>
@@ -250,7 +251,7 @@ export default function AddProductForm({
         >
           {productIsSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 
-          {productIsSaving ? "Saving..." : "Save product"}
+          {productIsSaving ? t("saving") : t("saveProduct")}
         </button>
       </div>
     </form>

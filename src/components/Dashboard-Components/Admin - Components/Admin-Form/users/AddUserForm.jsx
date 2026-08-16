@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "../../../../../api/API";
 import { Loader2 } from "lucide-react";
+import { useLanguage } from "../../../../../context/LanguageContext.jsx";
 export default function AddUserForm({
   setOpenDialog,
   editData,
   setStatusMessage,
 }) {
+  const { t } = useLanguage();
   const [form, setForm] = useState({
     firstName: "",
     email: "",
@@ -25,10 +27,10 @@ export default function AddUserForm({
 
   const validate = () => {
     const newError = {};
-    if (!form.firstName) newError.firstName = "First name is required";
-    if (!form.email) newError.email = "Email is required";
-    if (!form.password) newError.password = "Password is required";
-    if (!form.age) newError.age = "Age is required";
+    if (!form.firstName) newError.firstName = t("first_name_required");
+    if (!form.email) newError.email = t("email_required");
+    if (!form.password) newError.password = t("password_required");
+    if (!form.age) newError.age = t("age_required");
     setError(newError);
     return Object.keys(newError).length === 0;
   };
@@ -51,8 +53,8 @@ export default function AddUserForm({
       setStatusMessage({
         type: "success",
         message: editData
-          ? "User updated successfully"
-          : "User added successfully",
+          ? t("userUpdatedSuccessfully")
+          : t("userAddedSuccessfully"),
       });
       // setOpenDialog(false);
 
@@ -64,10 +66,10 @@ export default function AddUserForm({
     },
     onError: (err) => {
       console.error("Error adding user:", err);
-      setError({ submit: "Failed to add user. Please try again." });
+      setError({ submit: t("failedToSaveUser") });
       setStatusMessage({
         type: "error",
-        message: "Something went wrong",
+        message: t("somethingWentWrong"),
       });
       setTimeout(() => {
         setStatusMessage(null);
@@ -101,7 +103,7 @@ export default function AddUserForm({
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          First Name
+          {t("first_name")}
         </label>
 
         <input
@@ -109,7 +111,7 @@ export default function AddUserForm({
           name="firstName"
           value={form.firstName}
           onChange={handleChange}
-          placeholder="Enter first name"
+          placeholder={t("enterFirstName")}
           className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
         />
 
@@ -120,7 +122,7 @@ export default function AddUserForm({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Email
+          {t("email")}
         </label>
 
         <input
@@ -128,7 +130,7 @@ export default function AddUserForm({
           name="email"
           value={form.email}
           onChange={handleChange}
-          placeholder="Enter email"
+          placeholder={t("enterEmail")}
           className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
         />
 
@@ -139,7 +141,7 @@ export default function AddUserForm({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Password
+          {t("password")}
         </label>
 
         <input
@@ -147,7 +149,7 @@ export default function AddUserForm({
           name="password"
           value={form.password}
           onChange={handleChange}
-          placeholder="Enter password"
+          placeholder={t("enterPassword")}
           className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
         />
 
@@ -159,7 +161,7 @@ export default function AddUserForm({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Age
+            {t("age")}
           </label>
 
           <input
@@ -168,7 +170,7 @@ export default function AddUserForm({
             value={form.age}
             onChange={handleChange}
             min="18"
-            placeholder="Age"
+            placeholder={t("enterAge")}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
           />
 
@@ -179,7 +181,7 @@ export default function AddUserForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Role
+            {t("role")}
           </label>
 
           <select
@@ -188,9 +190,9 @@ export default function AddUserForm({
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#004A57] transition"
           >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-            <option value="moderator">Moderator</option>
+            <option value="user">{t("user")}</option>
+            <option value="admin">{t("admin")}</option>
+            <option value="moderator">{t("moderator")}</option>
           </select>
         </div>
       </div>
@@ -213,7 +215,7 @@ export default function AddUserForm({
         >
           {userIsSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 
-          {userIsSaving ? "Saving..." : "Save User"}
+          {userIsSaving ? t("saving") : t("saveUser")}
         </button>
       </div>
     </form>

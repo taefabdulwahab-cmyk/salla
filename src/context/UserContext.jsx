@@ -23,14 +23,12 @@ export const UserProvider = ({ children }) => {
       const res = await API.post("auth/login", newUser);
 
       const userRes = await API.get(`/users/${res.data.id}`);
-      // console.log("res.data: ", res.data);
-      // console.log("LOGIN RESPONSE", res.data);
-      // console.log("USER RESPONSE", userRes.data);
-      // console.log("ROLE", userRes.data.role);
+      //1
       setUser({
         ...res.data,
+        //2
         // role: userRes.data.role,
-        role: "user",
+        role: "admin",
       });
       // setUser(res.data);
       setToken(res.data.accessToken);
@@ -55,3 +53,11 @@ export const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
+//1
+// console.log("res.data: ", res.data);
+// console.log("LOGIN RESPONSE", res.data);
+// console.log("USER RESPONSE", userRes.data);
+// console.log("ROLE", userRes.data.role);
+
+//2
+// role: userRes.data.role,

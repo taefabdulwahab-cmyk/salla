@@ -6,12 +6,13 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { CartContext } from "../../context/CartContext";
 import { Heart } from "lucide-react";
 import { WishlistContext } from "../../context/WishlistContext";
+import { useLanguage } from "../../context/LanguageContext";
 export default function ProductCard({ product }) {
   const { addToCart } = useContext(CartContext);
   const { toggleWishlist, wishlist } = useContext(WishlistContext);
   const [toast, setToast] = useState({ message: "", image: "" });
   const [loading, setLoading] = useState(false);
-
+  const { t } = useLanguage();
   const showToast = (message, animation) => {
     setToast({ message, animation });
     setTimeout(() => setToast({ message: "", animation: "" }), 3000);
@@ -20,13 +21,13 @@ export default function ProductCard({ product }) {
   const handleClick = (product, reject) => {
     setLoading(true);
     showToast(
-      "witing...",
+      t("waiting"),
       "https://lottie.host/8198f307-d47b-42f7-bda5-e71e88f1c8ef/AVjAWu6FdK.lottie",
     );
     setTimeout(() => {
       addToCart(product);
       showToast(
-        "Add To Cart",
+        t("addToCart"),
         "https://lottie.host/3a5828ce-7ba1-426c-a209-422e2ec801fb/zrbCh1YveA.lottie",
       );
       setLoading(false);
@@ -35,8 +36,8 @@ export default function ProductCard({ product }) {
   const isWishlisted = wishlist.some((item) => item.id === product.id);
   return (
     <div className=" flex flex-col bg-white rounded-lg  items-center md:p-3 p-2   shadow-md  h-fit ">
-      <div className=" flex  justify-center rounded-lg mb-2  ">
-        <div className="w-full h-50 relative">
+      <div className=" flex  justify-center rounded-lg mb-1  ">
+        <div className="w-full h-40 sm:h-50 relative">
           <Heart
             onClick={() => toggleWishlist(product)}
             fill={isWishlisted ? "currentColor" : "none"}
@@ -47,16 +48,18 @@ export default function ProductCard({ product }) {
             <img
               src={product.images?.[0]}
               alt="product images"
-              className="object-contain w-full h-50 "
+              className="object-contain w-full h-40 sm:h-50 "
             />
           </Link>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-start gap-2 w-full  ">
-        <div className="flex flex-col items-center justify-center gap-1 text-center w-full h-28">
-          <div>
-            <h2>{product.title}</h2>
-            <small>{product.shortDescription}</small>
+      <div className="flex flex-col items-center justify-start  gap-2 sm:gap-2 md:gap-3 lg:gap-3 w-full  ">
+        <div className="flex flex-col items-center justify-center gap-1 text-center w-full h-3 sm:h-3 md:h-5 lg:h-7">
+          <div className="w-full min-w-0">
+            <h2 className="w-full truncate text-xs sm:text-sm">
+              {product.title}
+            </h2>
+            {/* <small>{product.description}</small> */}
           </div>
         </div>
 
@@ -65,7 +68,7 @@ export default function ProductCard({ product }) {
         </div>
       </div>
       <div className="flex justify-center items-center w-full ">
-        <div className=" m-4 text-md">
+        <div className=" m-2 sm:m-3 md:m-4 lg:m-4  text-md">
           <p className="font-bold">SAR&nbsp;{product?.price?.toFixed(2)}</p>
         </div>
       </div>
@@ -75,18 +78,21 @@ export default function ProductCard({ product }) {
         className={`w-full ${loading ? "cursor-not-allowed bg-[#01252c] " : "cursor-pointer"}`}
         onClick={() => handleClick(product)}
       >
-        {loading ? "loding..." : "Add to cart"}
+        {loading ? t("loading") : t("addToCart")}
       </Button>
 
       {toast.message && (
-        <div className="fixed bottom-4 right-4 bg-[#ffffff]  border-gray-300 shadow-md px-10 py-2 rounded-md flex items-center ">
-          <p className="text-gray-800 text-lg">{toast.message}</p>
+        <div className="fixed bottom-4 right-2 sm:right-4  bg-[#ffffff]  border-gray-300 shadow-md px-3 sm:px-5 md:px-10 py-2 rounded-md flex items-center z-50 max-w-[calc(100%-1rem)]">
+          <p className="text-gray-800 text-sm sm:text-base md:text-lg">
+            {toast.message}
+          </p>
           {toast.animation && (
             <DotLottieReact
               src={toast.animation}
               autoplay
               loop
-              style={{ width: "60px", height: "60px" }}
+              // style={{ width: "50px", height: "50px" }}
+              className="w-11.25 h-11.25 sm:w-12.5 sm:h-12.5 md:w-20 md:h-20"
             />
           )}
         </div>

@@ -2,14 +2,16 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import LogoutButton from "../button/LogoutButton";
+import { useLanguage } from "../../context/LanguageContext";
 export default function UserIcon() {
   const { user, logout } = useContext(UserContext);
+  const { t } = useLanguage();
 
   return (
     <div className="relative group flex gap-2 justify-center items-center">
       <Link
         to={user ? "/dashboard/profile" : "/login"}
-        className="flex items-center justify-center relative  w-10 h-10  rounded-full bg-[#bcf0e4] "
+        className="flex items-center justify-center relative  w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#bcf0e4] "
       >
         {user && user.image ? (
           <img
@@ -38,7 +40,7 @@ export default function UserIcon() {
                         opacity-0 invisible group-hover:opacity-100 group-hover:visible
                         transition duration-200 z-50"
         >
-          <p className="font-bold  text-gray-500">Enter to admin panel</p>
+          <p className="font-bold  text-gray-500">{t("enterToAdminPanel")}</p>
           <p className="font-bold">
             {user.firstName} {user.lastName}
           </p>

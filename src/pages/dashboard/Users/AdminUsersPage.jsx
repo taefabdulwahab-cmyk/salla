@@ -7,9 +7,13 @@ import Dialog from "../../../components/Dashboard-Components/Admin - Components/
 import AddUserForm from "../../../components/Dashboard-Components/Admin - Components/Admin-Form/users/AddUserForm";
 import StatusMessage from "../../../components/Dashboard-Components/Admin - Components/Messages/StatusMessage";
 import ViewUserDialog from "../../../components/Dashboard-Components/Admin - Components/Dialogs/ViewUserDialog";
+import { useLanguage } from "../../../context/LanguageContext.jsx";
+import { useOutletContext } from "react-router-dom";
 export default function AdminUsersPage() {
-  const [openDialog, setOpenDialog] = useState(false);
+  const { t } = useLanguage();
+  const { search } = useOutletContext();
 
+  const [openDialog, setOpenDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -28,6 +32,18 @@ export default function AdminUsersPage() {
     staleTime: SIX_HOURS,
     cacheTime: SIX_HOURS,
   });
+
+  const filteredUsers = data?.users?.filter((user) => {
+    const searchValue = search.toLowerCase();
+
+    return (
+      String(user.id).toLowerCase().includes(searchValue) ||
+      user.firstName?.toLowerCase().includes(searchValue) ||
+      user.email?.toLowerCase().includes(searchValue) ||
+      user.role?.toLowerCase().includes(searchValue)
+    );
+  });
+
   const handleView = (user) => {
     setSelectedUser(user);
     setOpenViewDialog(true);
@@ -50,7 +66,7 @@ export default function AdminUsersPage() {
 
       setStatusMessage({
         type: "success",
-        message: "User deleted successfully",
+        message: t("userDeletedSuccessfully"),
       });
 
       queryClient.invalidateQueries({
@@ -66,7 +82,7 @@ export default function AdminUsersPage() {
 
       setStatusMessage({
         type: "error",
-        message: "Delete failed",
+        message: t("deleteFailed"),
       });
 
       setTimeout(() => {
@@ -78,14 +94,14 @@ export default function AdminUsersPage() {
   return (
     <div className="p-5">
       <TableHeader
-        title="Users"
-        count={data?.users?.length}
-        description="manage your users"
-        buttonText="+ Add User"
+        title={t("users")}
+        count={filteredUsers?.length}
+        description={t("manageYourUsers")}
+        buttonText={t("addUser")}
         onClick={() => setOpenDialog(true)}
       />
       <UsersTable
-        users={data?.users}
+        users={filteredUsers}
         loading={isLoading}
         error={error?.message}
         onEdit={handleEdit}
@@ -95,8 +111,8 @@ export default function AdminUsersPage() {
       <Dialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}
-        title="Add user"
-        description="Add a new user"
+        title={t("addUser")}
+        description={t("manageYourUsers")}
         loading={false}
         children={
           <AddUserForm
@@ -105,12 +121,11 @@ export default function AdminUsersPage() {
           />
         }
       />
-
       <Dialog
         open={openEditDialog}
         onClose={() => setOpenEditDialog(false)}
-        title="Edit User"
-        description="Update user information"
+        title={t("editUser")}
+        description={t("updateUserInformation")}
       >
         <AddUserForm
           setOpenDialog={setOpenEditDialog}
@@ -118,29 +133,26 @@ export default function AdminUsersPage() {
           editData={selectedUser}
         />
       </Dialog>
-
       <Dialog
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}
-        title="Delete User"
-        description={`Are you sure you want to delete ${selectedUser?.firstName}?`}
-        confirmText="Delete"
+        title={t("deleteUser")}
+        description={t("areYouSureYouWantToDelete")}
+        confirmText={t("delete")}
         variant="danger"
         onConfirm={handleConfirmDelete}
       />
-
       {statusMessage && (
         <StatusMessage
           message={statusMessage.message}
           type={statusMessage.type}
         />
       )}
-
       <ViewUserDialog
         open={openViewDialog}
         onClose={() => setOpenViewDialog(false)}
         selectedUser={selectedUser}
-        title="User Details"
+        title={t("userDetails")}
       />
     </div>
   );

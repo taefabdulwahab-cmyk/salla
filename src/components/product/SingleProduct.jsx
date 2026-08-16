@@ -1,64 +1,129 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-// import { product } from "../../data/products";
-import SingleCard from "../product/SingleCard";
 import { useQuery } from "@tanstack/react-query";
-import { API } from "../../api/API";
 
-import { useEffect } from "react";
+import SingleCard from "../product/SingleCard";
+import { API } from "../../api/API";
 import { UserContext } from "../../context/UserContext";
-import { useContext } from "react";
+import { useLanguage } from "../../context/LanguageContext";
+
 export default function SingleProduct() {
+  const { language, translate } = useLanguage();
+  const { user } = useContext(UserContext);
+  const { id } = useParams();
+
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-  const { user } = useContext(UserContext);
   const [isAddingComment, setIsAddingComment] = useState(false);
-  const { id } = useParams();
+  const [quantity, setQuantity] = useState(1);
+
   const {
     data: productData,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["products", id],
-    queryFn: async () =>
-      await API.get(`products/${id}`).then((res) => res.data),
+    queryKey: ["singleProduct", id, language],
+
+    queryFn: async () => {
+      const res = await API.get(`products/${id}`);
+      const product = res.data;
+
+      // English → رجع البيانات الأصلية
+      if (language === "en") {
+        return product;
+      }
+
+      // English → Arabic
+      const translatedTitle = product.title
+        ? await translate(product.title)
+        : "";
+
+      const translatedShortDescription = product.shortDescription
+        ? await translate(product.shortDescription)
+        : "";
+
+      const translatedDescription = product.description
+        ? await translate(product.description)
+        : "";
+
+      const translatedCategory = product.category
+        ? await translate(product.category)
+        : "";
+
+      return {
+        ...product,
+        title: translatedTitle,
+        shortDescription: translatedShortDescription,
+        description: translatedDescription,
+        category: translatedCategory,
+      };
+    },
+
+    // لا نستخدم بيانات قديمة أثناء تغيير اللغة
+    staleTime: 0,
   });
+
+  // تحميل التعليقات
   useEffect(() => {
-    const savedComments = localStorage.getItem(`comments-${id}`);
+    const loadComments = async () => {
+      if (!productData?.reviews) {
+        setComments([]);
+        return;
+      }
 
-    if (savedComments) {
-      setComments(JSON.parse(savedComments));
-    }
-  }, [id]);
+      const formattedReviews = await Promise.all(
+        productData.reviews.map(async (review, index) => ({
+          id: `review-${index}`,
+          body:
+            language === "ar"
+              ? await translate(review.comment)
+              : review.comment,
+          user: {
+            username: review.reviewerName,
+          },
+        })),
+      );
 
-  const handleAddComment = () => {
+      setComments(formattedReviews);
+    };
+
+    loadComments();
+  }, [productData, language, translate]);
+
+  // إضافة تعليق
+  const handleAddComment = async () => {
     if (!newComment.trim()) return;
 
     setIsAddingComment(true);
 
-    setTimeout(() => {
-      const comment = {
-        id: Date.now(),
+    try {
+      const res = await API.post("comments/add", {
         body: newComment,
+        postId: Number(id),
+        userId: user?.id || 1,
+      });
+
+      const commentText =
+        language === "ar" ? await translate(res.data.body) : res.data.body;
+
+      const newCommentData = {
+        id: res.data.id,
+        body: commentText,
         user: {
-          username: user?.username || "Guest",
+          username: res.data.user?.username || user?.username || "Guest",
         },
       };
 
-      const updatedComments = [comment, ...comments];
-
-      setComments(updatedComments);
-
-      localStorage.setItem(`comments-${id}`, JSON.stringify(updatedComments));
+      setComments((prev) => [newCommentData, ...prev]);
 
       setNewComment("");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    } finally {
       setIsAddingComment(false);
-    }, 1000);
+    }
   };
-
-  const [quantity, setQuantity] = useState(1);
 
   const handleAddQuantity = () => {
     setQuantity((prev) => prev + 1);
@@ -67,66 +132,46 @@ export default function SingleProduct() {
   const handleRemoveQuantity = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
+
+  // تحميل المنتج + الترجمة
   if (isLoading) {
     return (
-      <div className="w-full h-125 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-2">
-          {/* <img
-            src="https://icons8.com/preloaders/preloaders/813/preview.gif"
-            className="w-30 opacity-100 rounded-full mb-2"
-          /> */}
+      <div className="flex flex-col items-center justify-center min-h-[500px]">
+        <DotLottieReact
+          src="https://lottie.host/9748cf75-6053-4e72-9873-1cf25a9099c5/v1rS37WZ7X.lottie"
+          loop
+          autoplay
+          style={{ width: "200px", height: "200px" }}
+        />
 
-          <DotLottieReact
-            src="https://lottie.host/9748cf75-6053-4e72-9873-1cf25a9099c5/v1rS37WZ7X.lottie"
-            loop
-            autoplay
-          />
-          <span>is Loading...</span>
-        </div>
+        <span className="text-gray-500">Loading...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="w-full h-125 flex items-center justify-center">
-        <span>{error?.message}</span>
+      <div className="flex justify-center items-center min-h-[300px]">
+        <span className="text-red-500">{error.message}</span>
       </div>
     );
   }
 
+  if (!productData) {
+    return null;
+  }
+
   return (
-    <div>
-      {!isLoading && !error && (
-        <SingleCard
-          data={productData}
-          quantity={quantity}
-          onAddQuantity={handleAddQuantity}
-          onRemoveQuantity={handleRemoveQuantity}
-          comments={comments}
-          newComment={newComment}
-          setNewComment={setNewComment}
-          handleAddComment={handleAddComment}
-          isAddingComment={isAddingComment}
-        />
-      )}
-    </div>
+    <SingleCard
+      data={productData}
+      quantity={quantity}
+      onAddQuantity={handleAddQuantity}
+      onRemoveQuantity={handleRemoveQuantity}
+      comments={comments}
+      newComment={newComment}
+      setNewComment={setNewComment}
+      handleAddComment={handleAddComment}
+      isAddingComment={isAddingComment}
+    />
   );
 }
-
-// const foundProduct = products.find((p) => p.id === Number(id));
-
-// const [product, setProduct] = useState({
-//   ...foundProduct,
-//   quantity: 1,
-// });
-
-// const wait = new Promise((resolve) => {
-//     setTimeout(() => {
-//       resolve(products);
-//     }, 4000);
-//   });
-
-/* {isLoading && <span>Loading...</span>}
-
-      {error && <span>{error.message}</span>} */

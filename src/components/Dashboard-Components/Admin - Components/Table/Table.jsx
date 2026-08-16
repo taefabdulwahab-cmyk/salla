@@ -1,11 +1,13 @@
 import React from "react";
 import ErrorMsg from "../Messages/ErrorMsg";
+import { useLanguage } from "../../../../context/LanguageContext.jsx";
 export default function Table({
   columns = [],
   data = [],
   loading = false,
   error,
 }) {
+  const { t } = useLanguage();
   return (
     <div className="overflow-x-auto bg-white rounded-xl shadow">
       <table className="w-full  text-sm">
@@ -26,7 +28,7 @@ export default function Table({
                 colSpan={columns.length}
                 className="text-center py-10 text-gray-500"
               >
-                Loading...
+                {t("loading")}
               </td>
             </tr>
           )}
@@ -44,7 +46,7 @@ export default function Table({
                 colSpan={columns.length}
                 className="text-center py-10 text-gray-400"
               >
-                No data available
+                {t("noDataAvailable")}
               </td>
             </tr>
           )}
