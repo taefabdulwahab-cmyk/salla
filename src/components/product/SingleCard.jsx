@@ -64,36 +64,36 @@ export default function SingleCard({
   };
 
   return (
-    <div className="flex grow flex-wrap w-full">
-      <div className="flex-auto max-w-293 mx-auto">
+    <div className="flex grow flex-wrap w-full ">
+      <div className="flex-auto max-w-290 mx-auto ">
         {/* Product */}
-        <div className="flex flex-col md:flex-row gap-4 p-4 bg-[#ffffff] shadow-xs rounded-lg text-white">
+        <div className="flex flex-col md:flex-row gap-3 p-4 bg-[#ffffff] shadow-xs rounded-lg text-white md:mt-10">
           {/* Image */}
-          <div className="flex items-center md:items-start  ">
+          <div className="flex items-center md:items-start">
             <img
               src={data.images?.[0]}
               alt="product image"
-              className="h-50 md:h-70 w-full object-cover rounded-lg md:mb-2"
+              className="h-50 m-5 sm:h-70 w-full object-cover rounded-lg md:mb-2"
             />
           </div>
 
           {/* Information */}
-          <div className="flex flex-col flex-1 gap-4">
-            <div className="flex items-end text-right flex-col">
-              <h1 className="text-2xl md:text-3xl text-black mb-2">
+          <div className="flex flex-col flex-1 gap-4 ">
+            <div className="flex items-end text-right flex-col gap-4">
+              <h1 className="text-2xl md:text-4xl text-black md:mb-5">
                 {data.title}
               </h1>
 
-              <small className="text-gray-500 font-light text-xs">
+              {/* <small className="text-gray-500 font-light text-xs">
                 {data.shortDescription}
-              </small>
+              </small> */}
 
-              <p className="text-black text-[20px] font-medium mt-6 mb-4 text-left w-full">
+              <p className="text-black text-[20px] font-medium mt-3 mb-2 md:mt-6 md:mb-4 text-left w-full">
                 SAR&nbsp;
                 {data?.price?.toFixed(2)}
               </p>
 
-              <p className="text-black indent-8 text-base/6 font[100] text-[14px]">
+              <p className="text-black indent-8  font[100] md:text-base/7 ">
                 {data.description}
               </p>
             </div>
@@ -120,8 +120,7 @@ export default function SingleCard({
         </div>
 
         {/* Comments */}
-        {/* Comments */}
-        <div className="mt-8 sm:mt-10 bg-white p-4 sm:p-5 lg:p-6 rounded-lg shadow-sm w-full max-w-4xl mx-auto">
+        <div className="mt-8 sm:mt-10 bg-white p-4 sm:p-5 rounded-lg shadow-sm w-full">
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">
             {t("comments")}
           </h2>
