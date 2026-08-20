@@ -120,27 +120,3 @@ export default function HomePage() {
     </>
   );
 }
-// productData?.products
-
-// const filteredProducts1 =
-//   Filters === "all"
-//     ? productData?.products
-//     : productData?.products?.filter((p) => p.category === Filters);
-
-// const SearchProducts1 =
-//   search === ""
-//     ? productData?.products
-//     : productData?.products?.filter((p) => {
-//         const text = search.toLowerCase();
-
-//         return (
-//           p.title.toLowerCase().includes(text) ||
-//           p.category.toLowerCase().includes(text)
-//         );
-//       });
-
-// const { data: searchData } = useQuery({
-//   queryKey: ["Search-Items"],
-//   queryFn: async () =>
-//     await API.get(`/products/search?q=`).then((res) => res.data),
-// });

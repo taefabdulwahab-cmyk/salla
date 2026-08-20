@@ -9,7 +9,7 @@ import { UserContext } from "../../context/UserContext";
 import { useLanguage } from "../../context/LanguageContext";
 
 export default function SingleProduct() {
-  const { language, translate } = useLanguage();
+  const { language, translate, translateBatch } = useLanguage();
   const { user } = useContext(UserContext);
   const { id } = useParams();
 
@@ -30,25 +30,30 @@ export default function SingleProduct() {
       const product = res.data;
 
       // English → رجع البيانات الأصلية
-      if (language === "en") {
-        return product;
-      }
-
       // English → Arabic
-      const translatedTitle = product.title
-        ? await translate(product.title)
-        : "";
+      const texts = [
+        product.title,
+        product.shortDescription,
+        product.description,
+        product.category,
+      ].filter(Boolean);
+
+      const translatedTexts = await translateBatch(texts);
+
+      let index = 0;
+
+      const translatedTitle = product.title ? translatedTexts[index++] : "";
 
       const translatedShortDescription = product.shortDescription
-        ? await translate(product.shortDescription)
+        ? translatedTexts[index++]
         : "";
 
       const translatedDescription = product.description
-        ? await translate(product.description)
+        ? translatedTexts[index++]
         : "";
 
       const translatedCategory = product.category
-        ? await translate(product.category)
+        ? translatedTexts[index++]
         : "";
 
       return {

@@ -1,15 +1,27 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
 import ar from "../locales/ar";
 import en from "../locales/en";
 
 const LanguageContext = createContext();
+
+const TRANSLATION_URL = "https://translation-salla-api.onrender.com/translate";
 
 export function LanguageProvider({ children }) {
   const [language, setLanguage] = useState(
     localStorage.getItem("language") || "en",
   );
 
-  const translationCache = new Map();
+  const translationCache = useRef(
+    new Map(JSON.parse(localStorage.getItem("translationCache") || "[]")),
+  );
 
   useEffect(() => {
     localStorage.setItem("language", language);
@@ -18,54 +30,120 @@ export function LanguageProvider({ children }) {
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
   }, [language]);
 
-  const translate = async (text) => {
-    if (language === "en" || !text) {
-      return text;
-    }
+  const saveCache = useCallback(() => {
+    localStorage.setItem(
+      "translationCache",
+      JSON.stringify([...translationCache.current]),
+    );
+  }, []);
 
-    if (translationCache.has(text)) {
-      return translationCache.get(text);
-    }
+  const translateBatch = useCallback(
+    async (texts) => {
+      if (language === "en") {
+        return texts;
+      }
 
-    try {
-      const response = await fetch("http://localhost:5000/translate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          q: text,
-          source: "en",
-          target: "ar",
-          format: "text",
-        }),
+      if (!texts?.length) {
+        return [];
+      }
+
+      const uniqueTexts = [
+        ...new Set(
+          texts.filter(
+            (text) => typeof text === "string" && text.trim().length > 0,
+          ),
+        ),
+      ];
+
+      const resultMap = new Map();
+
+      const missingTexts = [];
+
+      uniqueTexts.forEach((text) => {
+        if (translationCache.current.has(text)) {
+          resultMap.set(text, translationCache.current.get(text));
+        } else {
+          missingTexts.push(text);
+        }
       });
 
-      if (!response.ok) {
-        throw new Error("Translation failed");
+      if (missingTexts.length === 0) {
+        return texts.map((text) => resultMap.get(text) || text);
       }
 
-      const data = await response.json();
-      const translatedText = data?.translatedText;
+      console.log("Texts that need translation:", missingTexts);
 
-      if (!translatedText) {
-        throw new Error("No translation returned");
+      try {
+        const response = await fetch(TRANSLATION_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            q: missingTexts,
+            source: "en",
+            target: "ar",
+            format: "text",
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Translation failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        console.log("Translation response:", data);
+
+        if (!Array.isArray(data.translatedText)) {
+          throw new Error("Invalid translation response");
+        }
+
+        data.translatedText.forEach((translatedText, index) => {
+          const originalText = missingTexts[index];
+
+          if (originalText && translatedText) {
+            translationCache.current.set(originalText, translatedText);
+
+            resultMap.set(originalText, translatedText);
+          }
+        });
+
+        saveCache();
+      } catch (error) {
+        console.error("Translation request error:", error);
+
+        missingTexts.forEach((text) => {
+          resultMap.set(text, text);
+        });
       }
 
-      translationCache.set(text, translatedText);
+      return texts.map((text) => resultMap.get(text) || text);
+    },
+    [language, saveCache],
+  );
 
-      return translatedText;
-    } catch (error) {
-      console.error("Translation error:", text, error);
-      return text;
-    }
-  };
+  const translate = useCallback(
+    async (text) => {
+      if (language === "en" || !text) {
+        return text;
+      }
+
+      const result = await translateBatch([text]);
+
+      return result[0] || text;
+    },
+    [language, translateBatch],
+  );
 
   const translations = language === "ar" ? ar : en;
 
-  const t = (key) => {
-    return translations[key] || key;
-  };
+  const t = useCallback(
+    (key) => {
+      return translations[key] || key;
+    },
+    [translations],
+  );
 
   return (
     <LanguageContext.Provider
@@ -73,6 +151,7 @@ export function LanguageProvider({ children }) {
         language,
         setLanguage,
         translate,
+        translateBatch,
         t,
       }}
     >

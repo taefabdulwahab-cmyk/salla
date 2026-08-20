@@ -126,7 +126,7 @@ const en = {
   confirm: "Confirm",
   success: "Success",
   error: "Error",
-
+  remove: "Remove",
   // User/Product Buttons
   saveUser: "Save User",
   saveProduct: "Save Product",
@@ -137,6 +137,18 @@ const en = {
 
   // Errors
   somethingWentWrong: "Something went wrong",
+
+  //login
+  login: "Login",
+  logintocontinueshopping: "login to continue shopping",
+  donothaveanaccount: "don't have an account?",
+
+  //Signup
+  register: "Register",
+  Registertocontinueshopping: "Register to continue shopping",
+  Email: "Email",
+  Passwordconfirmation: "Password confirmation",
+  alreadyhaveanaccount: "already have an account?",
 };
 
 export default en;

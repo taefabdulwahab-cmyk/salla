@@ -5,8 +5,9 @@ import Form from "./Form";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import { useLanguage } from "../../context/LanguageContext";
 export default function LoginForm() {
+  const { t } = useLanguage();
   const { addUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [loginData, setLoginData] = React.useState({
@@ -31,8 +32,8 @@ export default function LoginForm() {
       <section className="flex-auto pr-3 pl-3">
         <div className=" sm:p-4 bg-white rounded-lg  mx-auto sm:max-w-175 p-3">
           <div className="flex flex-col text-center justify-center mb-6 ">
-            <h1 className="text-xl">Login</h1>
-            <p className=" text-gray-500 ">Login to continue shopping</p>
+            <h1 className="text-xl">{t("login")}</h1>
+            <p className=" text-gray-500 ">{t("logintocontinueshopping")}</p>
           </div>
           <form
             onSubmit={handleSubmit}
@@ -43,9 +44,9 @@ export default function LoginForm() {
               name="username"
               value={loginData.username}
               onChange={handleChange}
-              placeholder="email"
+              placeholder={t("username")}
             >
-              User Name
+              {t("username")}
             </Form>
 
             <Form
@@ -53,23 +54,23 @@ export default function LoginForm() {
               name="password"
               value={loginData.password}
               onChange={handleChange}
-              placeholder="password"
+              placeholder={t("password")}
             >
-              Password
+              {t("password")}
             </Form>
 
             <div className="mt-4"></div>
 
             <div className="flex gap-4">
               <Button type="submit" onSubmit={handleSubmit}>
-                Login
+                {t("login")}
               </Button>
 
               <Link
                 to="/signup"
                 className="w-fit text-[#004A57] underline p-2 text-md"
               >
-                don't have an account
+                {t("donothaveanaccount")}
               </Link>
             </div>
           </form>

@@ -28,6 +28,8 @@ export const UserProvider = ({ children }) => {
         ...res.data,
         //2
         // role: userRes.data.role,
+        //admin
+        //user
         role: "admin",
       });
       // setUser(res.data);

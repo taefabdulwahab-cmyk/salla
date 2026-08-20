@@ -40,7 +40,7 @@ export default function WishlistCard() {
                 onClick={() => toggleWishlist(product)}
                 className="mt-auto w-full bg-red-500 text-white py-2 rounded cursor-pointe text-sm sm:text-base"
               >
-                Remove
+                {t("remove")}{" "}
               </button>
             </div>
           ))}

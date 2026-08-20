@@ -126,6 +126,7 @@ const ar = {
   processing: "جارٍ التنفيذ...",
   success: "نجاح",
   error: "خطأ",
+  remove: "حذف",
 
   // User/Product Buttons
   saveUser: "حفظ المستخدم",
@@ -137,6 +138,18 @@ const ar = {
 
   // Errors
   somethingWentWrong: "حدث خطأ ما",
+
+  // Login
+  login: "تسجيل الدخول",
+  logintocontinueshopping: "سجّل الدخول لمتابعة التسوق",
+  donothaveanaccount: "ليس لديك حساب؟",
+
+  // Signup
+  register: "إنشاء حساب",
+  Registertocontinueshopping: "أنشئ حسابًا لمتابعة التسوق",
+  Email: "البريد الإلكتروني",
+  Passwordconfirmation: "تأكيد كلمة المرور",
+  alreadyhaveanaccount: "هل لديك حساب بالفعل؟",
 };
 
 export default ar;

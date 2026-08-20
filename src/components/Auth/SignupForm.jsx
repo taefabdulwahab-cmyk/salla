@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 import Form from "./Form";
 import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../context/LanguageContext";
+
 export default function SignupForm() {
+  const { t } = useLanguage();
   const { addUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [SignupData, setSignupData] = React.useState({
@@ -38,8 +41,8 @@ export default function SignupForm() {
       <section className="flex-auto pr-3 pl-3">
         <div className=" sm:p-4 bg-white rounded-lg mx-auto sm:max-w-175 p-3">
           <div className="flex flex-col text-center justify-center mb-6 ">
-            <h1 className="text-xl">Register</h1>
-            <p className=" text-gray-500 ">Register to continue shopping</p>
+            <h1 className="text-xl">{t("register")}</h1>
+            <p className=" text-gray-500 ">{t("Registertocontinueshopping")}</p>
           </div>
 
           <form
@@ -51,9 +54,9 @@ export default function SignupForm() {
               name="username"
               value={SignupData.username}
               onChange={handleChange}
-              placeholder="username"
+              placeholder={t("username")}
             >
-              Username
+              {t("username")}
             </Form>
 
             <Form
@@ -63,7 +66,7 @@ export default function SignupForm() {
               onChange={handleChange}
               placeholder="example@example.com"
             >
-              Email
+              {t("Email")}
             </Form>
 
             <Form
@@ -71,9 +74,9 @@ export default function SignupForm() {
               name="password"
               value={SignupData.password}
               onChange={handleChange}
-              placeholder="****"
+              placeholder={t("password")}
             >
-              Password
+              {t("password")}
             </Form>
             <Form
               type="password"
@@ -82,18 +85,18 @@ export default function SignupForm() {
               onChange={handleChange}
               placeholder="****"
             >
-              Password confirmation
+              {t("Passwordconfirmation")}
             </Form>
             <div className="mt-4"></div>
 
             <div className="flex gap-4">
-              <Button type="submit">Register</Button>
+              <Button type="submit">{t("register")}</Button>
 
               <Link
                 to="/login"
                 className="w-fit text-[#004A57] underline p-2 text-md"
               >
-                already have an account?
+                {t("alreadyhaveanaccount")}
               </Link>
             </div>
           </form>
