@@ -10,7 +10,6 @@ export default function CartIcon() {
     (total, item) => total + Number(item.quantity),
     0,
   );
-  // const { user, logout } = useContext(UserContext);
 
   return (
     <Link to="/cart">

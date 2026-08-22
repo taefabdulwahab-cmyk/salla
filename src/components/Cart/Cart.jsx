@@ -1,7 +1,6 @@
 import React from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-// import {products} from "../../data/products";
 import Button from "../button/Button";
 import CartItem from "../Cart/CartItem";
 import { CartContext } from "../../context/CartContext";
@@ -49,13 +48,3 @@ export default function Cart() {
     </div>
   );
 }
-
-// const handleAddQuantity = (id) => {
-//   cartItems(id);
-// };
-// const handleRemoveQuantity = (id) => {
-//   cartItems(id);
-// };
-// const handleDeleteProduct = (id) => {
-//   cartItems(id);
-// };

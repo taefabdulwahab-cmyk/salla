@@ -65,11 +65,11 @@ export default function SingleProduct() {
       };
     },
 
-    // لا نستخدم بيانات قديمة أثناء تغيير اللغة
+    // لا نستخدم بيانات قديمة لما تغيير اللغة
     staleTime: 0,
   });
 
-  // تحميل التعليقات
+  // يحمل التعليقات
   useEffect(() => {
     const loadComments = async () => {
       if (!productData?.reviews) {
@@ -96,7 +96,7 @@ export default function SingleProduct() {
     loadComments();
   }, [productData, language, translate]);
 
-  // إضافة تعليق
+  //  تعليق
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
 
@@ -138,7 +138,6 @@ export default function SingleProduct() {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
 
-  // تحميل المنتج + الترجمة
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[500px]">

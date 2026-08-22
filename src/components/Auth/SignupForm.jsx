@@ -35,7 +35,6 @@ export default function SignupForm() {
     navigate("/");
     console.log("accepted", SignupData);
   };
-  // min-sm:scale-95  grow w-full
   return (
     <div className="flex  grow w-full">
       <section className="flex-auto pr-3 pl-3">

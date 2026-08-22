@@ -59,7 +59,6 @@ export default function ProductCard({ product }) {
             <h2 className="w-full truncate text-xs sm:text-sm">
               {product.title}
             </h2>
-            {/* <small>{product.description}</small> */}
           </div>
         </div>
 
@@ -91,7 +90,6 @@ export default function ProductCard({ product }) {
               src={toast.animation}
               autoplay
               loop
-              // style={{ width: "50px", height: "50px" }}
               className="w-11.25 h-11.25 sm:w-12.5 sm:h-12.5 md:w-20 md:h-20"
             />
           )}
@@ -99,7 +97,4 @@ export default function ProductCard({ product }) {
       )}
     </div>
   );
-}
-{
-  /* {toast.image && <img src={toast.image} className="w-10 h-10" />} */
 }

@@ -56,7 +56,6 @@ export default function AddUserForm({
           ? t("userUpdatedSuccessfully")
           : t("userAddedSuccessfully"),
       });
-      // setOpenDialog(false);
 
       await queryClient.invalidateQueries({ queryKey: ["users"] });
       setTimeout(() => {

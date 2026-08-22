@@ -84,10 +84,6 @@ export default function SingleCard({
                 {data.title}
               </h1>
 
-              {/* <small className="text-gray-500 font-light text-xs">
-                {data.shortDescription}
-              </small> */}
-
               <p className="text-black text-[20px] font-medium mt-3 mb-2 md:mt-6 md:mb-4 text-left w-full">
                 SAR&nbsp;
                 {data?.price?.toFixed(2)}
